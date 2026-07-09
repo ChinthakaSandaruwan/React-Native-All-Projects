@@ -3,13 +3,25 @@ import { StatusBar, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
+
+  let student = {
+    name: "Chinthaka",
+    age: 23,
+    gmail: "chinthakasw000@gmail.com",
+  };
+
+  console.log(student.age);
+
+  let subjects = [10, 30, 80, 55, 465, 64852, 458, "OOP", "DBMS"];
+
+  console.log(subjects[5]);
+
   return (
     <SafeAreaView style={GlobalStyles.container}>
       <StatusBar backgroundColor="purple" barStyle={"light-content"} />
 
       <View style={styles.View1}></View>
       <View style={styles.View2}></View>
-      
     </SafeAreaView>
   );
 }
