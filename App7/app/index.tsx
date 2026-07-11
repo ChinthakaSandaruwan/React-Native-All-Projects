@@ -17,6 +17,7 @@ export default function Index() {
 
   return (
     <SafeAreaView style={styles.container}>
+      
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         
         {/* Counter Display */}
