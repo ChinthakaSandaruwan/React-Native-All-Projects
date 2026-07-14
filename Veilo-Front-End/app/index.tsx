@@ -67,15 +67,15 @@ export default function Login() {
     if (!isLoading) {
         return (
             <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-                <KeyboardAvoidingView 
+                <KeyboardAvoidingView
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
                     style={styles.keyboardView}
                 >
-                    <ScrollView 
+                    <ScrollView
                         contentContainerStyle={styles.scrollContent}
                         showsVerticalScrollIndicator={false}
                     >
-                        
+
                         <Image
                             source={require("../assets/images/icon.png")}
                             style={styles.img}
@@ -88,29 +88,29 @@ export default function Login() {
 
                         <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ececec' }]}>
                             <AntDesign name="user-add" size={20} color={theme.icon} style={styles.iconStyle} />
-                            <TextInput 
-                                style={[styles.input, { color: theme.text, fontFamily: systemFont }]} 
-                                placeholder='Enter your Mobile' 
+                            <TextInput
+                                style={[styles.input, { color: theme.text, fontFamily: systemFont }]}
+                                placeholder='Enter your Mobile'
                                 placeholderTextColor={theme.icon}
-                                onChangeText={setMobile} 
+                                onChangeText={setMobile}
                             />
                         </View>
 
                         <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ececec' }]}>
                             <MaterialIcons name="lock-outline" size={22} color={theme.icon} style={styles.iconStyle} />
-                            <TextInput 
-                                style={[styles.input, { color: theme.text, fontFamily: systemFont }]} 
-                                placeholder='Enter your Password' 
+                            <TextInput
+                                style={[styles.input, { color: theme.text, fontFamily: systemFont }]}
+                                placeholder='Enter your Password'
                                 placeholderTextColor={theme.icon}
                                 secureTextEntry={secureText} // Controlled by state variable
-                                onChangeText={setPassworde} 
+                                onChangeText={setPassworde}
                             />
                             {/* Toggle Button */}
                             <Pressable onPress={() => setSecureText(!secureText)} style={styles.eyeIconStyle}>
-                                <Ionicons 
-                                    name={secureText ? "eye-off-outline" : "eye-outline"} 
-                                    size={20} 
-                                    color={theme.icon} 
+                                <Ionicons
+                                    name={secureText ? "eye-off-outline" : "eye-outline"}
+                                    size={20}
+                                    color={theme.icon}
                                 />
                             </Pressable>
                         </View>
@@ -200,9 +200,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     footerRow: {
-        flexDirection: "row", 
-        gap: 5, 
-        alignItems: "center", 
+        flexDirection: "row",
+        gap: 5,
+        alignItems: "center",
         marginTop: 5
     }
 });

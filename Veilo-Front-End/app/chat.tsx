@@ -190,23 +190,23 @@ export default function Chat() {
                         router.back();
                     }} />
                     <Image
-                       source={{ uri: (userImg && userImg !== "" && !userImg.endsWith("/undefined") && !userImg.endsWith("/null")) ? apiUrl + userImg : "https://img.icons8.com/ios-filled/50/user-male-circle.png" }}
-                                style={styles.profilePic}
+                        source={{ uri: (userImg && userImg !== "" && !userImg.endsWith("/undefined") && !userImg.endsWith("/null")) ? apiUrl + userImg : "https://img.icons8.com/ios-filled/50/user-male-circle.png" }}
+                        style={styles.profilePic}
                     />
                     <View style={{ flex: 1, gap: 3 }}>
                         <Text style={[styles.nameTxt, { color: currentColors.text, fontFamily: systemFont }]}>{userName}</Text>
                         <View style={styles.statusView}>
                             <View style={styles.statusBall} />
-                            <Text style={[styles.statusTxt, { color: currentColors.tabIconDefault, fontFamily: systemFont }]}>Online</Text>
+                            <Text style={[styles.statusTxt, { color: currentColors.tabIconDefault, fontFamily: systemFont }]}>Public</Text>
                         </View>
                     </View>
-                 {/* Delete icon */}
-                 <MaterialCommunityIcons name="delete-circle-outline" size={30} color={currentColors.text}
-                    onPress={()=>{
-                        deleteChat();
-                    }}
-                 
-                 />
+                    {/* Delete icon */}
+                    <MaterialCommunityIcons name="delete-circle-outline" size={30} color={currentColors.text}
+                        onPress={() => {
+                            deleteChat();
+                        }}
+
+                    />
                 </View>
 
                 <View style={[styles.bodyView, { backgroundColor: colorScheme === 'dark' ? '#1c1e20' : '#eff3ff' }]}>
@@ -221,7 +221,7 @@ export default function Chat() {
                                     <Text style={[
                                         styles.message,
                                         userMobile === item.sender ? styles.receiveMsg : styles.sendMsg,
-                                        userMobile === item.sender 
+                                        userMobile === item.sender
                                             ? { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ffffff', color: currentColors.text, fontFamily: systemFont }
                                             : { backgroundColor: currentColors.tint, color: colorScheme === 'dark' ? '#151718' : 'white', fontFamily: systemFont }
                                     ]}>
@@ -243,12 +243,12 @@ export default function Chat() {
 
                 <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#1c1e20' : '#eff3ff' }]}>
 
-                    <TextInput 
-                        style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#25282a' : 'white', color: currentColors.text, fontFamily: systemFont }]} 
-                        placeholder='Enter Message' 
+                    <TextInput
+                        style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#25282a' : 'white', color: currentColors.text, fontFamily: systemFont }]}
+                        placeholder='Enter Message'
                         placeholderTextColor={currentColors.tabIconDefault}
-                        onChangeText={settext} 
-                        value={text} 
+                        onChangeText={settext}
+                        value={text}
                     />
 
                     <Pressable style={[styles.sendBtn, { backgroundColor: currentColors.tint }]} onPress={() => {
@@ -280,7 +280,7 @@ export default function Chat() {
                         }
 
                     }}>
-                        
+
                         <MaterialCommunityIcons name="send" size={30} color={colorScheme === 'dark' ? '#151718' : 'white'} />
                     </Pressable>
 

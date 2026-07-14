@@ -44,11 +44,11 @@ export default function Signup() {
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-            <KeyboardAvoidingView 
+            <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={styles.keyboardView}
             >
-                <ScrollView 
+                <ScrollView
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator={false}
                 >
@@ -64,43 +64,43 @@ export default function Signup() {
 
                     <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ececec' }]}>
                         <AntDesign name="user-add" size={20} color={theme.icon} style={styles.iconStyle} />
-                        <TextInput 
-                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]} 
-                            placeholder='Enter your First Name' 
+                        <TextInput
+                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]}
+                            placeholder='Enter your First Name'
                             placeholderTextColor={theme.icon}
-                            onChangeText={setFname} 
+                            onChangeText={setFname}
                         />
                     </View>
 
                     <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ececec' }]}>
                         <AntDesign name="user-add" size={20} color={theme.icon} style={styles.iconStyle} />
-                        <TextInput 
-                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]} 
-                            placeholder='Enter your Last Name' 
+                        <TextInput
+                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]}
+                            placeholder='Enter your Last Name'
                             placeholderTextColor={theme.icon}
-                            onChangeText={setLname} 
+                            onChangeText={setLname}
                         />
                     </View>
 
                     <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ececec' }]}>
                         <AntDesign name="user-add" size={20} color={theme.icon} style={styles.iconStyle} />
-                        <TextInput 
-                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]} 
-                            placeholder='Enter your Mobile' 
+                        <TextInput
+                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]}
+                            placeholder='Enter your Mobile'
                             placeholderTextColor={theme.icon}
                             keyboardType="phone-pad"
-                            onChangeText={setMobile} 
+                            onChangeText={setMobile}
                         />
                     </View>
 
                     <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ececec' }]}>
                         <MaterialIcons name="lock-outline" size={22} color={theme.icon} style={styles.iconStyle} />
-                        <TextInput 
-                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]} 
-                            placeholder='Enter your Password' 
+                        <TextInput
+                            style={[styles.input, { color: theme.text, fontFamily: systemFont }]}
+                            placeholder='Enter your Password'
                             placeholderTextColor={theme.icon}
                             secureTextEntry
-                            onChangeText={setPassword} 
+                            onChangeText={setPassword}
                         />
                     </View>
 
@@ -184,9 +184,9 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     footerRow: {
-        flexDirection: "row", 
-        gap: 5, 
-        alignItems: "center", 
+        flexDirection: "row",
+        gap: 5,
+        alignItems: "center",
         marginTop: 5
     }
 });
