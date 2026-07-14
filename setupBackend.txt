@@ -68,3 +68,10 @@ Set up your project to look like this:
 error,
    "typescript": "^5.4.5"
    change this to in packge.json
+
+
+after get repo 
+    npm install
+
+
+    npx kill-port 3000
