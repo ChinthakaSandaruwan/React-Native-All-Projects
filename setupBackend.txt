@@ -1,0 +1,66 @@
+================================================================
+       NODE.JS + TYPESCRIPT PROJECT SETUP GUIDE
+================================================================
+
+----------------------------------------------------------------
+STEP 1 — PROJECT SETUP
+----------------------------------------------------------------
+
+Create the folder and initialize:
+
+    npm init -y
+
+Install all packages:
+
+    npm install express mysql2
+    npm install --save-dev typescript ts-node nodemon @types/express @types/node @types/mysql
+
+----------------------------------------------------------------
+STEP 2 — CONFIGURE TYPESCRIPT (tsconfig.json)
+----------------------------------------------------------------
+
+Create a file called tsconfig.json in your project root and
+paste the following:
+
+    {
+      "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "strict": true,
+        "esModuleInterop": true
+      }
+    }
+
+
+----------------------------------------------------------------
+STEP 3 — UPDATE package.json SCRIPTS
+----------------------------------------------------------------
+
+Open package.json and update the "scripts" section to:
+
+    "scripts": {
+      "start": "nodemon --exec ts-node src/index.ts"
+    }
+
+To run your project, use:
+
+    npm start
+
+
+----------------------------------------------------------------
+STEP 4 — PROJECT FOLDER STRUCTURE
+----------------------------------------------------------------
+
+All your TypeScript files live inside a src/ folder.
+Set up your project to look like this:
+
+    shop-api/
+    ├── src/
+    │   ├── routes/
+    │   │   └── products.ts
+    │   └── index.ts
+    ├── package.json
+    └── tsconfig.json
+
