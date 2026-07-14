@@ -102,4 +102,29 @@ router.post("/clear-all", async (req, res) => {
   }
 });
 
+router.post("/delete", async (req, res) => {
+  try {
+    const { chatId } = req.body;
+    if (!chatId) {
+      res.status(400).send({ msg: "Chat ID is required" });
+      return;
+    }
+
+    await promise.query(
+      "DELETE FROM ghost_chat_history WHERE ghost_chat_chat_id = ?",
+      [chatId],
+    );
+
+    await promise.query(
+      "DELETE FROM ghost_chat WHERE chat_id = ?",
+      [chatId],
+    );
+
+    res.status(200).send({ msg: "Ghost chat deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: "Error deleting ghost chat" });
+  }
+});
+
 export default router;

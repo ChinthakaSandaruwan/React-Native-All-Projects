@@ -4,7 +4,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View, useColorScheme } from "react-native";
+import { Alert, FlatList, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Fonts } from '../constants/theme';
 
@@ -108,6 +108,60 @@ export default function GhostChatRoom() {
 
     }
 
+    function deleteChat() {
+        if (Platform.OS === 'web') {
+            const consent = confirm("Are you sure you want to delete this ghost chat?");
+            if (consent) performDelete();
+        } else {
+            Alert.alert(
+                "Delete Chat",
+                "Are you sure you want to delete this ghost chat?",
+                [
+                    { text: "Cancel", style: "cancel" },
+                    { text: "Delete", style: "destructive", onPress: performDelete }
+                ]
+            );
+        }
+    }
+
+    async function performDelete() {
+        try {
+            const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+            const response = await fetch(apiUrl + "/ghost-chat/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chatId })
+            });
+
+            if (response.ok) {
+                if (Platform.OS === 'web') {
+                    alert("Ghost chat deleted successfully");
+                } else {
+                    Alert.alert("Success", "Ghost chat deleted successfully");
+                }
+                router.back();
+            } else {
+                let msg = "Unknown error";
+                try {
+                    const data = await response.json();
+                    msg = data.msg || msg;
+                } catch (_) {}
+                if (Platform.OS === 'web') {
+                    alert(msg);
+                } else {
+                    Alert.alert("Error", msg);
+                }
+            }
+        } catch (error) {
+            console.error("Delete ghost chat error: ", error);
+            if (Platform.OS === 'web') {
+                alert("Something went wrong");
+            } else {
+                Alert.alert("Error", "Something went wrong");
+            }
+        }
+    }
+
     return (
 
         <KeyboardAvoidingView
@@ -131,6 +185,11 @@ export default function GhostChatRoom() {
                             <Text style={[styles.statusTxt, { color: currentColors.tabIconDefault, fontFamily: systemFont }]}>Ghost Mode</Text>
                         </View>
                     </View>
+                    <MaterialCommunityIcons name="delete-circle-outline" size={30} color={currentColors.text}
+                        onPress={() => {
+                            deleteChat();
+                        }}
+                    />
                 </View>
 
                 <View style={[styles.bodyView, { backgroundColor: colorScheme === 'dark' ? '#1c1e20' : '#eff3ff' }]}>

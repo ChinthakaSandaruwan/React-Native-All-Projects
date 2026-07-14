@@ -125,11 +125,11 @@ export default function Profile() {
 
     return (
         <SafeAreaView style={[styles.container, dynamicStyles.container]}>
-            <KeyboardAvoidingView 
+            <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={{ flex: 1, width: "100%" }}
             >
-                <ScrollView 
+                <ScrollView
                     contentContainerStyle={styles.scrollContent}
                     refreshControl={
                         <RefreshControl
@@ -154,9 +154,9 @@ export default function Profile() {
 
                     <View style={[styles.inputView, dynamicStyles.inputContainer]}>
                         <AntDesign name="user-add" size={20} color={currentColors.icon} />
-                        <TextInput 
-                            style={[styles.input, dynamicStyles.input]} 
-                            value={fname} 
+                        <TextInput
+                            style={[styles.input, dynamicStyles.input]}
+                            value={fname}
                             onChangeText={setFname}
                             placeholder="First Name"
                             placeholderTextColor={currentColors.tabIconDefault}
@@ -165,9 +165,9 @@ export default function Profile() {
 
                     <View style={[styles.inputView, dynamicStyles.inputContainer]}>
                         <AntDesign name="user-add" size={20} color={currentColors.icon} />
-                        <TextInput 
-                            style={[styles.input, dynamicStyles.input]} 
-                            value={lname} 
+                        <TextInput
+                            style={[styles.input, dynamicStyles.input]}
+                            value={lname}
                             onChangeText={setlname}
                             placeholder="Last Name"
                             placeholderTextColor={currentColors.tabIconDefault}
@@ -176,9 +176,9 @@ export default function Profile() {
 
                     <View style={[styles.inputView, dynamicStyles.inputContainer]}>
                         <MaterialIcons name="lock-outline" size={22} color={currentColors.icon} />
-                        <TextInput 
-                            style={[styles.input, dynamicStyles.input]} 
-                            value={password} 
+                        <TextInput
+                            style={[styles.input, dynamicStyles.input]}
+                            value={password}
                             onChangeText={setPassword}
                             secureTextEntry={true}
                             placeholder="Password"
@@ -186,8 +186,8 @@ export default function Profile() {
                         />
                     </View>
 
-                    <Pressable 
-                        style={[styles.btn, dynamicStyles.updateButton, { marginTop: 20 }]} 
+                    <Pressable
+                        style={[styles.btn, dynamicStyles.updateButton, { marginTop: 20 }]}
                         onPress={update}
                     >
                         <Text style={[styles.btnTxt, { fontFamily: Fonts.sans, color: colorScheme === 'dark' ? '#151718' : 'white' }]}>Update</Text>
@@ -205,8 +205,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     scrollContent: {
-        flexGrow: 1, 
-        gap: 18, 
+        flexGrow: 1,
+        gap: 18,
         alignItems: "center",
         justifyContent: "center", // This centers the elements vertically
         paddingVertical: 20
@@ -243,6 +243,8 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
+        borderWidth: 1,
+        borderColor: "#848484ff"
     },
     input: {
         flex: 1,
