@@ -6,7 +6,7 @@ export default function RootLayout(){
 
         <Stack screenOptions={{headerShown:false}}>
             <Stack.Screen name="index" />
-            <Stack.Screen name="signup"/>
+            <Stack.Screen name="signUp"/>
             <Stack.Screen name="(tabs)"/>
             <Stack.Screen name="chat"/>
             <Stack.Screen name="ghost_chat"/>

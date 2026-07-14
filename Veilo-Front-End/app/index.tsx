@@ -121,7 +121,7 @@ export default function Login() {
 
                         <View style={styles.footerRow}>
                             <Text style={{ color: theme.icon, fontFamily: systemFont }}>{"Don't have account?"}</Text>
-                            <Pressable style={{ height: 30 }} onPress={() => router.push("/signup")}>
+                            <Pressable style={{ height: 30 }} onPress={() => router.push("/signUp")}>
                                 <Text style={{ fontWeight: "bold", fontSize: 15, color: theme.tint, fontFamily: systemFont }} >Sign Up</Text>
                             </Pressable>
                         </View>
