@@ -31,7 +31,7 @@ export default function GhostChat() {
             if (response.ok) {
                 setChatData(data);
             } else {
-                alert(response.status + " : " + data.msg);
+                alert(data.msg);
             }
         } catch (err) {
             console.log(err);

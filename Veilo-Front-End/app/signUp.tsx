@@ -35,7 +35,7 @@ export default function Signup() {
                 });
 
                 const resData = await response.json();
-                alert(response.status + " : " + resData.msg);
+                alert(resData.msg);
             } catch (err) {
                 console.log(err);
             }
