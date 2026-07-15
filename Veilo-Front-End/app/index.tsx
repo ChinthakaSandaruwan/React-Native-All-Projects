@@ -82,7 +82,7 @@ export default function Login() {
                         />
 
                         <View style={styles.textView}>
-                            <Text style={[styles.titleTxt, { color: theme.text, fontFamily: systemFont }]}>SignIn</Text>
+                            <Text style={[styles.titleTxt, { color: theme.text, fontFamily: systemFont }]}>SignIn To Veilo</Text>
                             <Text style={[styles.descriptionTxt, { color: theme.icon, fontFamily: systemFont }]}>Please Sign in to continue.</Text>
                         </View>
 
