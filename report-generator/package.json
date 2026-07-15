@@ -1,0 +1,12 @@
+{
+  "name": "report-generator",
+  "version": "1.0.0",
+  "description": "Report generator for Veilo Chat App",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node index.js"
+  },
+  "dependencies": {
+    "docx": "^8.5.0"
+  }
+}

@@ -1,0 +1,396 @@
+import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
+import { FlatList, Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View, useColorScheme, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Colors, Fonts } from '../constants/theme';
+import Fontisto from '@expo/vector-icons/Fontisto';
+
+
+export default function Chat() {
+    const colorScheme = useColorScheme() ?? 'light';
+    const currentColors = Colors[colorScheme];
+    const systemFont = Fonts?.sans || 'System';
+
+    const [chatHistory, setChatHistory] = useState<any[]>([]);
+    const [userName, setUserName] = useState("");
+
+    const [loggedUser, setLoggedUser] = useState<any>();
+
+    const [text, settext] = useState("");
+
+    const webSocket = useRef<WebSocket>(null);
+
+    const router = useRouter();
+
+    const params = useLocalSearchParams();
+    const chatId = params.chatId;
+    const userMobile = params.userMobile;
+    const userImg = params.userImg as string;
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+
+    useEffect(() => {
+
+        setUserName(params.userName + "");
+
+        loadChatHistory();
+        connectWebSocket();
+
+        return () => {
+            webSocket.current?.close();
+        }
+
+    }, []);
+
+    async function loadChatHistory() {
+
+        const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+        const response = await fetch(apiUrl + "/chat-history/get-chat-history?id=" + chatId);
+
+        const data = await response.json();
+
+        if (response.ok) {
+
+            setChatHistory(data);
+
+        } else {
+            console.log(response.status + "  : " + data.msg);
+            alert("Something went wrong");
+        }
+
+    }
+
+    function timeFormat(time: string) {
+
+        const formattedTime = new Date(time).toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+        });
+
+        return formattedTime;
+
+    }
+
+    async function connectWebSocket() {
+
+        const user = await AsyncStorage.getItem("user");
+
+        let userObj: any;
+
+        if (user) {
+            userObj = JSON.parse(user);
+            setLoggedUser(userObj);
+        }
+
+        const wsUrl = process.env.EXPO_PUBLIC_WS_URL || "ws://192.168.1.9:3000";
+        webSocket.current = new WebSocket(wsUrl);
+
+        console.log("Web socket starting...")
+
+        webSocket.current.onopen = () => {
+            console.log("Connected to webSocket");
+
+            if (webSocket.current) {
+
+
+                const data = {
+                    type: "register",
+                    data: userObj.mobile
+                };
+
+                webSocket.current.send(JSON.stringify(data));
+
+
+            }
+
+        }
+
+
+        webSocket.current.onmessage = (event) => {
+
+            const message = JSON.parse(event.data);
+
+            console.log(message);
+
+            setChatHistory(chatArray => [message, ...chatArray]);
+
+        }
+
+    }
+
+    function deleteChat() {
+        if (Platform.OS === 'web') {
+            const consent = confirm("Are you sure you want to delete this chat?");
+            if (consent) performDelete();
+        } else {
+            Alert.alert(
+                "Delete Chat",
+                "Are you sure you want to delete this chat?",
+                [
+                    { text: "Cancel", style: "cancel" },
+                    { text: "Delete", style: "destructive", onPress: performDelete }
+                ]
+            );
+        }
+    }
+
+    async function performDelete() {
+        try {
+            const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+            const response = await fetch(apiUrl + "/chat/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chatId })
+            });
+
+            if (response.ok) {
+                if (Platform.OS === 'web') {
+                    alert("Chat deleted successfully");
+                } else {
+                    Alert.alert("Success", "Chat deleted successfully");
+                }
+                router.back();
+            } else {
+                const data = await response.json();
+                const msg = data.msg || "Unknown error";
+                if (Platform.OS === 'web') {
+                    alert("Error: " + msg);
+                } else {
+                    Alert.alert("Error", msg);
+                }
+            }
+        } catch (error) {
+            console.error("Delete chat error: ", error);
+            if (Platform.OS === 'web') {
+                alert("Something went wrong");
+            } else {
+                Alert.alert("Error", "Something went wrong");
+            }
+        }
+    }
+
+    return (
+
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+            style={[styles.container, { backgroundColor: currentColors.background }]}
+        >
+
+            <SafeAreaView style={[styles.container, { backgroundColor: currentColors.background }]}>
+
+                <View style={[styles.headerView, { backgroundColor: currentColors.background, borderBottomWidth: 1, borderBottomColor: colorScheme === 'dark' ? '#2c2e30' : '#e5e5e5' }]}>
+                    <Entypo name="chevron-left" size={24} color={currentColors.text} onPress={() => {
+                        router.back();
+                    }} />
+                    <Image
+                        source={{ uri: (userImg && userImg !== "" && !userImg.endsWith("/undefined") && !userImg.endsWith("/null")) ? apiUrl + userImg : "https://img.icons8.com/ios-filled/50/user-male-circle.png" }}
+                        style={styles.profilePic}
+                    />
+                    <View style={{ flex: 1, gap: 3 }}>
+                        <Text style={[styles.nameTxt, { color: currentColors.text, fontFamily: systemFont }]}>{userName}</Text>
+                        <View style={styles.statusView}>
+                            <View style={styles.statusBall} />
+                            <Text style={[styles.statusTxt, { color: currentColors.tabIconDefault, fontFamily: systemFont }]}>Public</Text>
+                        </View>
+                    </View>
+                    {/* Delete icon */}
+                    <MaterialCommunityIcons name="delete-circle-outline" size={30} color={currentColors.text}
+                        onPress={() => {
+                            deleteChat();
+                        }}
+
+                    />
+                </View>
+
+                <View style={[styles.bodyView, { backgroundColor: colorScheme === 'dark' ? '#1c1e20' : '#eff3ff' }]}>
+
+                    <FlatList
+                        data={chatHistory}
+                        renderItem={({ item }) => {
+
+                            return (
+
+                                <View style={[styles.messageView, { alignItems: userMobile === item.sender ? "flex-start" : "flex-end" }]}>
+                                    <Text style={[
+                                        styles.message,
+                                        userMobile === item.sender ? styles.receiveMsg : styles.sendMsg,
+                                        userMobile === item.sender
+                                            ? { backgroundColor: colorScheme === 'dark' ? '#25282a' : '#ffffff', color: currentColors.text, fontFamily: systemFont }
+                                            : { backgroundColor: currentColors.tint, color: colorScheme === 'dark' ? '#151718' : 'white', fontFamily: systemFont }
+                                    ]}>
+                                        {item.message}
+                                    </Text>
+                                    <Text style={[styles.msgTime, { color: currentColors.tabIconDefault, fontFamily: systemFont }]}>{timeFormat(item.sent_at)}</Text>
+                                </View>
+
+
+                            );
+
+                        }}
+                        inverted
+
+                    />
+
+
+                </View>
+
+                <View style={[styles.inputView, { backgroundColor: colorScheme === 'dark' ? '#1c1e20' : '#eff3ff' }]}>
+
+                    <TextInput
+                        style={[styles.input, { backgroundColor: colorScheme === 'dark' ? '#25282a' : 'white', color: currentColors.text, fontFamily: systemFont }]}
+                        placeholder='Enter Message'
+                        placeholderTextColor={currentColors.tabIconDefault}
+                        onChangeText={settext}
+                        value={text}
+                    />
+
+                    <Pressable style={[styles.sendBtn, { backgroundColor: currentColors.tint }]} onPress={() => {
+                        const trimmedText = text.trim();
+                        if (trimmedText.length === 0) return;
+
+                        if (webSocket.current) {
+                            const msg = {
+                                message: trimmedText,
+                                sent_at: new Date().toString(),
+                                sender: loggedUser.mobile
+                            };
+
+                            setChatHistory(oldChat => [msg, ...oldChat]);
+
+                            console.log("receiver: " + userMobile);
+
+                            const data = {
+                                type: "chat",
+                                data: trimmedText,
+                                receiver: userMobile,
+                                sender: loggedUser.mobile,
+                                chatId: chatId
+                            };
+
+                            settext("");
+
+                            webSocket.current.send(JSON.stringify(data));
+                        }
+                    }}>
+                        <MaterialCommunityIcons name="send" size={30} color={colorScheme === 'dark' ? '#151718' : 'white'} />
+                    </Pressable>
+
+                </View>
+
+            </SafeAreaView>
+
+        </KeyboardAvoidingView>
+
+
+    );
+
+
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "white"
+    },
+    headerView: {
+        backgroundColor: "white",
+        padding: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 15
+    },
+    profilePic: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+    },
+    nameTxt: {
+        color: "black",
+        fontWeight: '500',
+        fontSize: 18
+    },
+    statusView: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 5
+    },
+    statusTxt: {
+        color: "#a4a4a4",
+        fontSize: 12,
+    },
+    statusBall: {
+        width: 10,
+        height: 10,
+        borderRadius: 50,
+        backgroundColor: "#64fd85"
+    },
+
+    bodyView: {
+        flex: 1,
+        backgroundColor: "#eff3ff",
+        padding: 20,
+    },
+
+    msgTime: {
+        color: "#8f8f8f",
+        fontSize: 12,
+    },
+
+    message: {
+        fontWeight: "600",
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 20,
+        maxWidth: "90%",
+    },
+
+    messageView: {
+        width: "100%",
+        gap: 5,
+    },
+
+    sendMsg: {
+        backgroundColor: "#005eff",
+        color: "white",
+        borderTopRightRadius: 0,
+    },
+
+    receiveMsg: {
+        backgroundColor: "#ffffff",
+        color: "black",
+        borderTopLeftRadius: 0,
+    },
+
+
+    inputView: {
+        backgroundColor: "#eff3ff",
+        padding: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 15,
+    },
+
+    input: {
+        backgroundColor: "white",
+        flex: 1,
+        height: 50,
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 15
+    },
+    sendBtn: {
+        backgroundColor: "#005eff",
+        padding: 10,
+        borderRadius: 50,
+        width: 50,
+        height: 50
+    },
+
+});

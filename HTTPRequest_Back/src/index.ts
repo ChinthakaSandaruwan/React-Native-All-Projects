@@ -5,6 +5,10 @@ const app = express();
 
 app.use(express.json());
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b8abaf62abca9c95119607098e2eb16b6cd24c0
 app.get("/", (req, res) => {
   res.send("Welcome to HTTP Request BackEnd");
 });
