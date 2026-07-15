@@ -75,3 +75,7 @@ after get repo
 
 
     npx kill-port 3000
+
+
+git config --global user.name "chinthakasw000"
+git config --global user.email "chinthakasw000@gmail.com"
