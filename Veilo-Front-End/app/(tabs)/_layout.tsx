@@ -21,7 +21,7 @@ export default function TabLayout() {
         }}>
 
             <Tabs.Screen name="home" options={{
-                tabBarLabel: "Home",
+                tabBarLabel: "",
                 tabBarIcon: ({ color, size }) => {
                     return (
                         <MaterialIcons name="home" size={size} color={color} />
@@ -30,7 +30,7 @@ export default function TabLayout() {
             }} />
 
             <Tabs.Screen name="profile" options={{
-                tabBarLabel: "Profile",
+                tabBarLabel: "",
                 tabBarIcon: ({ color, size }) => {
                     return (
                         <FontAwesome name="user-circle-o" size={size} color={color} />
@@ -39,7 +39,7 @@ export default function TabLayout() {
             }} />
 
             <Tabs.Screen name="settings" options={{
-                tabBarLabel: "Settings",
+                tabBarLabel: "",
                 tabBarIcon: ({ color, size }) => {
                     return (
                         <Ionicons name="settings-sharp" size={size} color={color} />
