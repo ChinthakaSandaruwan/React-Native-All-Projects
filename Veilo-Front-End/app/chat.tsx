@@ -252,11 +252,12 @@ export default function Chat() {
                     />
 
                     <Pressable style={[styles.sendBtn, { backgroundColor: currentColors.tint }]} onPress={() => {
+                        const trimmedText = text.trim();
+                        if (trimmedText.length === 0) return;
 
                         if (webSocket.current) {
-
                             const msg = {
-                                message: text,
+                                message: trimmedText,
                                 sent_at: new Date().toString(),
                                 sender: loggedUser.mobile
                             };
@@ -267,7 +268,7 @@ export default function Chat() {
 
                             const data = {
                                 type: "chat",
-                                data: text,
+                                data: trimmedText,
                                 receiver: userMobile,
                                 sender: loggedUser.mobile,
                                 chatId: chatId
@@ -276,11 +277,8 @@ export default function Chat() {
                             settext("");
 
                             webSocket.current.send(JSON.stringify(data));
-
                         }
-
                     }}>
-
                         <MaterialCommunityIcons name="send" size={30} color={colorScheme === 'dark' ? '#151718' : 'white'} />
                     </Pressable>
 

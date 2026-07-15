@@ -235,11 +235,12 @@ export default function GhostChatRoom() {
                     />
 
                     <Pressable style={[styles.sendBtn, { backgroundColor: colorScheme === 'dark' ? '#fff' : '#7c3aed' }]} onPress={() => {
+                        const trimmedText = text.trim();
+                        if (trimmedText.length === 0) return;
 
                         if (webSocket.current) {
-
                             const msg = {
-                                message: text,
+                                message: trimmedText,
                                 sent_at: new Date().toString(),
                                 sender: loggedUser.mobile
                             };
@@ -248,7 +249,7 @@ export default function GhostChatRoom() {
 
                             const data = {
                                 type: "ghost_chat",
-                                data: text,
+                                data: trimmedText,
                                 sender: loggedUser.mobile,
                                 chatId: chatId
                             };
@@ -256,9 +257,7 @@ export default function GhostChatRoom() {
                             settext("");
 
                             webSocket.current.send(JSON.stringify(data));
-
                         }
-
                     }}>
                         <MaterialCommunityIcons name="send" size={30} color={colorScheme === 'dark' ? '#151718' : 'white'} />
                     </Pressable>
