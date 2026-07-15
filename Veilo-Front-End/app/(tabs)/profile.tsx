@@ -64,7 +64,8 @@ export default function Profile() {
         formData.append("password", password);
         formData.append("mobile", mobile);
 
-        if (hasNewImage && profileImage) {
+        const shouldUploadImage = hasNewImage && profileImage && !profileImage.startsWith("http://") && !profileImage.startsWith("https://");
+        if (shouldUploadImage) {
             formData.append("image", {
                 uri: profileImage,
                 name: "profile.jpg",
@@ -73,32 +74,65 @@ export default function Profile() {
         }
 
         const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-        try {
-            const response = await fetch(apiUrl + "/user/update", {
-                method: "POST",
-                body: formData,
-            });
-            const data = await response.json();
-            console.log(data);
-            if (response.ok && data.msg === "success") {
-                const userJson = await AsyncStorage.getItem("user");
-                if (userJson) {
-                    const user = JSON.parse(userJson);
-                    user.fname = fname;
-                    user.lname = lname;
-                    user.password = password;
-                    if (data.data) {
-                        user.profile_picture = data.data;
+        const maxAttempts = 2;
+
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+            try {
+                const response = await fetch(apiUrl + "/user/update", {
+                    method: "POST",
+                    headers: { Accept: "application/json" },
+                    body: formData,
+                    signal: controller.signal,
+                });
+
+                const contentType = response.headers.get("content-type") || "";
+                const data = contentType.includes("application/json")
+                    ? await response.json()
+                    : await response.text();
+
+                console.log("Update attempt", attempt, data);
+
+                if (response.ok && (typeof data === "object" ? data?.msg === "success" : data === "success")) {
+                    const userJson = await AsyncStorage.getItem("user");
+                    if (userJson) {
+                        const user = JSON.parse(userJson);
+                        user.fname = fname;
+                        user.lname = lname;
+                        user.password = password;
+                        if (typeof data === "object" && data?.data) {
+                            user.profile_picture = data.data;
+                        }
+                        await AsyncStorage.setItem("user", JSON.stringify(user));
                     }
-                    await AsyncStorage.setItem("user", JSON.stringify(user));
+                    setHasNewImage(false);
                     alert("Profile updated successfully!");
+                    return;
                 }
-            } else {
-                alert("Update failed: " + (data.msg || "Unknown error"));
+
+                if (attempt < maxAttempts) {
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    continue;
+                }
+
+                const message = typeof data === "string" ? data : data?.msg || "Unknown error";
+                alert("Update failed: " + message);
+                return;
+            } catch (err: any) {
+                console.log("Update failed attempt", attempt, err);
+
+                if (attempt < maxAttempts && (err?.name === "AbortError" || err?.message?.includes("Network request failed"))) {
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                    continue;
+                }
+
+                alert("Something went wrong. Please try again.");
+                return;
+            } finally {
+                clearTimeout(timeoutId);
             }
-        } catch (err) {
-            console.log("Update failed:", err);
-            alert("Something went wrong");
         }
     }
 
