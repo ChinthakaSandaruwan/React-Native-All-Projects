@@ -65,17 +65,24 @@ Set up your project to look like this:
     └── tsconfig.json
 
 
+
+
 error,
    "typescript": "^5.4.5"
    change this to in packge.json
+
+  "typescript": "^4.9.5"
+   npm install
+npm start
 
 
 after get repo 
     npm install
 
 
-    npx kill-port 3000
-
-
 git config --global user.name "chinthakasw000"
 git config --global user.email "chinthakasw000@gmail.com"
+
+
+ npx kill-port 3000
+ npm start     
