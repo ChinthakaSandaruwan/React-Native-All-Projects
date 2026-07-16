@@ -1,7 +1,5 @@
 import mysql from "mysql2";
 
-
-
 const db = mysql.createConnection({
     host:"localhost",
     user:"root",
@@ -10,10 +8,10 @@ const db = mysql.createConnection({
 
 });
 
-
 db.connect((error)=>{
 
     console.log(error?.message);
 
-
 })
+
+export default db ;
