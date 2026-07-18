@@ -1,10 +1,21 @@
-import  express  from "express";
+import express from "express";
+import user from "./routes/user";
 
 const app = express();
 
-app.listen(5000,()=>{
+app.use(express.json());
 
-    console.log("back end started");
-    console.log("Server URL: http://localhost:5000");
+app.get("/", (req, res) => {
+  res.send("welcome to the back end");
+});
+
+
+
+app.use("/user", user);
+
+
+app.listen(3000, () => {
+  console.log("back end start");
+  console.log("Base URL http://192.168.1.11:3000/user/get-user");
 
 });
