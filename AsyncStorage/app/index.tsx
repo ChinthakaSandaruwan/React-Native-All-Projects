@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -6,7 +6,7 @@ async function setString() {
   try {
     let name = "Chinthaka";
 
-    await AsyncStorage.setItem("name", name);
+   await AsyncStorage.setItem("name", name);
 
     console.log("Data Saved");
   } catch (err) {
@@ -47,14 +47,16 @@ async function addOtherTypes() {
 
 async function addArray() {
   try {
-    const subjects = ["OOPC", "HDP1", "SAD"];
+    const subjects:string[] = ["OOPC", "HDP1", "SAD"];
 
     const jsonValue = JSON.stringify(subjects);
 
     await AsyncStorage.setItem("subjects", jsonValue);
 
     console.log("Array saved");
+
   } catch (err) {
+
     console.log(err);
   }
 }
@@ -66,7 +68,7 @@ async function getArray() {
 
     if (jsonValue !== null) {
 
-      const subjects = JSON.parse(jsonValue);
+      const subjects:string[] = JSON.parse(jsonValue);
       console.log(subjects);
       console.log(subjects[0]);
 
