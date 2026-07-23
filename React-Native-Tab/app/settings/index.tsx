@@ -14,10 +14,21 @@ export default function Settings() {
       <Button
         title="Profile Settings"
         onPress={() => {
-          router.back();
+          router.push("/settings/profile");
         }}
       ></Button>
-      
+      <Button
+        title="Security Settings"
+        onPress={() => {
+          router.push("/settings/security");
+        }}
+      ></Button>
+      <Button
+        title="App Settings"
+        onPress={() => {
+          router.push("/settings/app");
+        }}
+      ></Button>
     </SafeAreaView>
   );
 }
