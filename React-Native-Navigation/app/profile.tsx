@@ -10,10 +10,10 @@ export default function Profile() {
       <View style={styles.content}>
         <Text style={styles.title}>Profile</Text>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.btn}
           onPress={() => router.back()}
-          // onPress={() => router.push("/")} 
+          // onPress={() => router.push("/")}
           // onPress={() => router.replace("/")}
           activeOpacity={0.7}
         >
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    gap: 20, 
+    gap: 20,
   },
   title: {
     fontSize: 24,
@@ -41,15 +41,15 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   btn: {
-    backgroundColor: "#007AFF", 
+    backgroundColor: "#007AFF",
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 25, // Kept your fully rounded capsule style
+    borderRadius: 25,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3, 
+    elevation: 3,
   },
   btnText: {
     color: "#fff",
